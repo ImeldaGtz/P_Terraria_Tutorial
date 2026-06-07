@@ -19,6 +19,7 @@ class Game: # Clase principal, de donde funciona todo
             if event.type == pygame.QUIT:   # Si dicho evento es tipo QUIT...
                 self.running = False        # Ya no corre
         pygame.display.update()             # Al terminar de verificar el estado de running, se actualiza la pantalla
+        self.clock.tick(FPS)                # Se indican los FPS
     def draw(self):         #? Para dibujar
         self.screen.fill('lightblue')   # Por ahora solo llena la pantalla de azul claro...
     def close(self):        #? Para cerrar
