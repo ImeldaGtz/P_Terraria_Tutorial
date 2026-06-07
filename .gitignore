@@ -1,0 +1,9 @@
+# Quiero borrar las carpetas de .vscode y la de python xd
+
+# Ignorar la carpeta .vscode
+.vscode/
+# Ignorar la carpeta de Python
+__pycache__/
+
+# Para borrar de add en git:
+# git rm -r --cached <archivo>
