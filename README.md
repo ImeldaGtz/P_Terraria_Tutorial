@@ -8,3 +8,13 @@ Si ___al finalizar___ el tutorial me siento insatisfecha usaré los conocimiento
 ---
 Cabe recalcar que __NO__ soy creadora de algo relacionado a Terraria oficial ni similares, solo es un proyecto a modo de _práctica_ con fines _educativos personales_.
 ***
+***
+
+## Completado del tutorial hasta el momento:
+* Parte 1:
+    * Ventana funcional.
+    * Gameplay Loop.
+* Parte 2:
+    * Implementación de sprites básicos.
+    * Sprites en movimiento por ticks.
+    * Sprites en movimiento por input.
