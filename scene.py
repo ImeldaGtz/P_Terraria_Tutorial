@@ -1,6 +1,7 @@
 import pygame
 from globals import *
 from sprite import Entity
+from player import Player
 
 class Scene:
     def __init__(self, app) -> None:
@@ -8,6 +9,8 @@ class Scene:
 
         self.sprites = pygame.sprite.Group()
         self.entity = Entity([self.sprites])
+
+        self.player = Player([self.sprites])
 
     def update(self):
         self.sprites.update()
