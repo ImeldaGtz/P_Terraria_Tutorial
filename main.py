@@ -1,6 +1,7 @@
 import pygame           
 import sys              
 from globals import *   
+from scene import Scene   
 
 class Game: 
     def __init__(self): #? Constructor
@@ -9,6 +10,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
+        self.scene = Scene(self)
 
     def run(self):      #? Para correr
         while self.running:
@@ -20,11 +22,13 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+
+        self.scene.update()
         pygame.display.update()
         self.clock.tick(FPS)
 
     def draw(self):         #? Para dibujar
-        self.screen.fill('lightblue')
+        self.scene.draw()
         
     def close(self):        #? Para cerrar
         pygame.quit()
