@@ -7,6 +7,8 @@ class Game:
     def __init__(self): #? Constructor
         pygame.init()   
         self.screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
+        pygame.display.set_caption("Py-rraria")
+        
         self.clock = pygame.time.Clock()
 
         self.running = True

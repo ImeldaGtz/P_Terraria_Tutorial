@@ -8,5 +8,6 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = position)
 
     def update(self):
-        self.rect.x += 1.
+        # self.rect.x += 1.
+        pass
         
