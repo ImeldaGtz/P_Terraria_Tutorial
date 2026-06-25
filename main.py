@@ -2,6 +2,7 @@ import pygame
 import sys              
 from globals import *   
 from scene import Scene   
+from events import EventHandler
 
 class Game: 
     def __init__(self): #? Constructor
@@ -21,7 +22,8 @@ class Game:
         self.close()
 
     def update(self):       #? Para actualizar
-        for event in pygame.event.get():
+        EventHandler.poll_events()
+        for event in EventHandler.events:
             if event.type == pygame.QUIT:
                 self.running = False
 

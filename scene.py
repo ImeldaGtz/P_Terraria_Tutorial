@@ -13,11 +13,15 @@ class Scene:
 
         self.sprites = pygame.sprite.Group()
         self.blocks = pygame.sprite.Group()
-        self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
+        
+        # self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
         Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
         Entity([self.sprites], position=(200, 200) ,image=self.atlas_textures['stone'])
 
-        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), {})
+        # Floor
+        Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
+
+        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), parameters={'block_group': self.blocks})
 
     def update(self):
         self.sprites.update()
