@@ -16,8 +16,8 @@ class Scene:
         self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
         Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
         Entity([self.sprites], position=(200, 200) ,image=self.atlas_textures['stone'])
-        Entity([self.sprites], position=(300, 300), image=self.solo_textures['player_static'])
-        self.player = Player([self.sprites])
+
+        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), {})
 
     def update(self):
         self.sprites.update()
