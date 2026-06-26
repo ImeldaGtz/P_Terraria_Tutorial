@@ -13,3 +13,16 @@ class EventHandler:
                 if event.key == key:
                     return True
         return False
+    
+    def clicked(leftright = 1) -> bool: # 1- left, 3 - right
+        for event in EventHandler.events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == leftright: # left click
+                    return True
+        return False
+    
+    def clicked_any() -> bool:
+        for event in EventHandler.events:            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return True
+        return False

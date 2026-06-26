@@ -23,7 +23,7 @@ class Scene:
         # # Floor
         # Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
 
-        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), parameters={'block_group': self.blocks})
+        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), parameters={'block_group': self.blocks, 'textures': self.atlas_textures})
 
         self.gen_world()
 
