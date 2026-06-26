@@ -4,6 +4,7 @@ from sprite import Entity
 from player import Player
 from texture_data import solo_texture_data, atlas_texture_data
 from opensimplex import OpenSimplex
+from camera import Camera
 
 class Scene:
     def __init__(self, app) -> None:
@@ -12,15 +13,15 @@ class Scene:
         self.solo_textures = self.gen_solo_textures()
         self.atlas_textures = self.gen_atlas_textures("res/atlas.png")
 
-        self.sprites = pygame.sprite.Group()
+        self.sprites = Camera()
         self.blocks = pygame.sprite.Group()
         
         # self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
         Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
         Entity([self.sprites], position=(200, 200) ,image=self.atlas_textures['stone'])
 
-        # Floor
-        Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
+        # # Floor
+        # Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
 
         self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), parameters={'block_group': self.blocks})
 
@@ -31,7 +32,7 @@ class Scene:
 
     def draw(self):
         self.app.screen.fill('lightblue')
-        self.sprites.draw(self.app.screen)
+        self.sprites.draw(self.player, self.app.screen)
 
     def gen_solo_textures(self) -> dict:
         textures = {}
