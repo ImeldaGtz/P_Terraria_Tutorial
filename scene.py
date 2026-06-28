@@ -1,6 +1,6 @@
 import pygame
 from globals import *
-from sprite import Entity
+from sprite import Entity, Mob
 from player import Player
 from texture_data import solo_texture_data, atlas_texture_data
 from opensimplex import OpenSimplex
@@ -17,14 +17,16 @@ class Scene:
         self.blocks = pygame.sprite.Group()
         
         # self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
-        Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
-        Entity([self.sprites], position=(200, 200) ,image=self.atlas_textures['stone'])
+        # Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
+        # Entity([self.sprites], position=(200, 200) ,image=self.atlas_textures['stone'])
 
         # # Floor
         # Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
 
-        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//2), parameters={'block_group': self.blocks, 'textures': self.atlas_textures})
+        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//9), parameters={'block_group': self.blocks, 'textures': self.atlas_textures})
 
+        Mob([self.sprites], self.solo_textures['zombie_static'], (800, -500), parameters={'block_group': self.blocks, 
+                                                                                          'player': self.player})
         self.gen_world()
 
     def update(self):
@@ -44,7 +46,7 @@ class Scene:
     
     def gen_atlas_textures(self, filepath) -> dict:
         textures ={}
-        atlas_img = pygame.transform.scale(pygame.image.load(filepath).convert_alpha(), (TILESIZE*12, TILESIZE*12))
+        atlas_img = pygame.transform.scale(pygame.image.load(filepath).convert_alpha(), (TILESIZE*36, TILESIZE*36))
 
         for name, data in atlas_texture_data.items():
             textures[name] = pygame.Surface.subsurface(atlas_img, pygame.Rect( data['position'][0]*TILESIZE,
@@ -57,7 +59,7 @@ class Scene:
         noise_gen = OpenSimplex(seed=32500000)
 
         heightmap = []
-        for y in range(20):
+        for y in range(60):
             noise_value = noise_gen.noise2( y * 0.05, 0)
             height = int( (noise_value +1) * 3 + 5 )
             heightmap.append(height)
