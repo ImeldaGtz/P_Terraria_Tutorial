@@ -1,7 +1,7 @@
 import pygame           
 import sys              
 from globals import *   
-from scene import Scene   
+from world.scene import Scene   
 from events import EventHandler
 
 class Game: 
