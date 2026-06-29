@@ -2,8 +2,9 @@ import pygame, math
 from globals import *
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, groups, image = pygame.Surface((TILESIZE, TILESIZE)), position = (0, 0)):
+    def __init__(self, groups, image = pygame.Surface((TILESIZE, TILESIZE)), position = (0, 0), name: str = 'default'):
         super().__init__(groups)
+        self.name = name
         self.in_groups = groups
         self.image = image
         self.rect = self.image.get_rect(topleft = position)
@@ -17,7 +18,8 @@ class Mob(Entity):
         super().__init__(groups, image, position)
 
         if parameters:
-            self.block_group = parameters['block_group']
+            self.group_list = parameters['group_list']
+            self.block_group = self.group_list['block_group']
             self.player = parameters['player']
 
         self.velocity = pygame.math.Vector2()

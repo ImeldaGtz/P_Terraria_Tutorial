@@ -5,17 +5,26 @@ from world.player import Player
 from world.texture_data import solo_texture_data, atlas_texture_data
 from opensimplex import OpenSimplex
 from camera import Camera
+from inventory.inventory import Inventory
+
 
 class Scene:
     def __init__(self, app) -> None:
         self.app = app
 
         self.solo_textures = self.gen_solo_textures()
-        self.atlas_textures = self.gen_atlas_textures("res/atlas.png")
+        self.atlas_textures = self.gen_atlas_textures("res/owatlas.png")
 
         self.sprites = Camera()
         self.blocks = pygame.sprite.Group()
+        self.group_list: dict[str, pygame.sprite.Group] = {
+            'sprites': self.sprites,
+            'block_group': self.blocks
+        }
         
+        # Inventory
+        self.inventory = Inventory(self.app)
+
         # self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
         # Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
         # Entity([self.sprites], position=(200, 200) ,image=self.atlas_textures['stone'])
@@ -23,18 +32,26 @@ class Scene:
         # # Floor
         # Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
 
-        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//9), parameters={'block_group': self.blocks, 'textures': self.atlas_textures})
+        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//9), parameters={
+            'group_list': self.group_list, 
+            'textures': self.atlas_textures,
+            'inventory': self.inventory
+            })
 
-        Mob([self.sprites], self.solo_textures['zombie_static'], (800, -500), parameters={'block_group': self.blocks, 
-                                                                                          'player': self.player})
+        Mob([self.sprites], self.solo_textures['zombie_static'], (800, -500), parameters={
+            'group_list': self.group_list, 
+            'player': self.player
+        })
         self.gen_world()
 
     def update(self):
         self.sprites.update()
+        self.inventory.update()
 
     def draw(self):
         self.app.screen.fill('lightblue')
         self.sprites.draw(self.player, self.app.screen)
+        self.inventory.draw()
 
     def gen_solo_textures(self) -> dict:
         textures = {}
@@ -46,7 +63,7 @@ class Scene:
     
     def gen_atlas_textures(self, filepath) -> dict:
         textures ={}
-        atlas_img = pygame.transform.scale(pygame.image.load(filepath).convert_alpha(), (TILESIZE*36, TILESIZE*36))
+        atlas_img = pygame.transform.scale(pygame.image.load(filepath).convert_alpha(), (TILESIZE*16, TILESIZE*16))
 
         for name, data in atlas_texture_data.items():
             textures[name] = pygame.Surface.subsurface(atlas_img, pygame.Rect( data['position'][0]*TILESIZE,
@@ -67,10 +84,11 @@ class Scene:
         for x in range(len(heightmap)):
             for y in range(heightmap[x]):
                 offset = 5-y + 5
-                texture = self.atlas_textures['dirt']
-                if y == heightmap[x] - 1:
-                    texture = self.atlas_textures['grass']
+                block_type = 'dirt'
+                if y == heightmap[x] - 1:                
+                    block_type = 'grass'
 
                 if y < heightmap[x] - 5:
-                    texture = self.atlas_textures['stone']
-                Entity( [self.sprites, self.blocks], texture, (x*TILESIZE, offset*TILESIZE) )
+                    block_type = 'stone'
+                    
+                Entity( [self.sprites, self.blocks], self.atlas_textures[block_type], (x*TILESIZE, offset*TILESIZE), name= block_type )

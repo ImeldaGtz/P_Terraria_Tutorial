@@ -14,7 +14,7 @@ atlas_texture_data = {
     'stone': {
         'type': 'block',
         'size': (TILESIZE, TILESIZE),
-        'position': (1, 1)
+        'position': (1, 0)
     }
 
 }
@@ -22,12 +22,12 @@ atlas_texture_data = {
 solo_texture_data = {
     'player_static': {
         'type': 'player',
-        'filepath': 'res/Terraria_Guide.png', 
+        'filepath': 'res/player.png', 
         'size': (TILESIZE*4, TILESIZE*4)
         },
     'zombie_static': {
         'type': 'enemy',
-        'filepath': 'res/zombie.webp', 
+        'filepath': 'res/zombie.png', 
         'size': (TILESIZE*4, TILESIZE*4)
         }
 }

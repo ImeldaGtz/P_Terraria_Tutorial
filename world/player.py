@@ -14,8 +14,10 @@ class Player(pygame.sprite.Sprite):
         self.terminal_velocity = self.mass * TERMINALVELOCITY
 
         # parameters
-        self.block_group = parameters['block_group']
+        self.group_list = parameters['group_list']
         self.textures = parameters['textures']
+        self.block_group = self.group_list['block_group']
+        self.inventory = parameters['inventory']
 
         # Is grounded
         self.grounded = True
@@ -79,13 +81,14 @@ class Player(pygame.sprite.Sprite):
             for block in self.block_group:
                 if block.rect.collidepoint(mouse_pos):
                     collision = True
-                    if EventHandler.clicked(1):
+                    if EventHandler.clicked(1): # Breaking the block
+                        self.inventory.add_item(block)
                         block.kill()
                 if EventHandler.clicked(3):
                     if not collision:
                         placed = True
         if placed and not collision:
-            Entity(block.in_groups, self.textures['grass'], self.get_block_position(mouse_pos))
+            self.inventory.use(self, self.get_block_position(mouse_pos))
 
     def get_adjusted_mouse_position(self) -> tuple:
         mouse_pos = pygame.mouse.get_pos()
