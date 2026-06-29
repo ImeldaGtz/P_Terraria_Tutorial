@@ -3,9 +3,10 @@ from world.items import *
 from events import EventHandler
 
 class Inventory:
-    def __init__(self, app) -> None:
+    def __init__(self, app, textures) -> None:
         self.app = app
         self.screen = app.screen
+        self.textures = textures
 
         # Create slots
         self.slots = []
@@ -16,6 +17,9 @@ class Inventory:
         self.slots[2] = BlockItem('dirt', 3)
 
         self.active_slot = 0
+
+        # fonts
+        self.font = pygame.font.Font(None, 30)
 
     def debug(self):
         for slot in self.slots:
@@ -52,4 +56,18 @@ class Inventory:
         if EventHandler.clicked_any():
             self.debug()
     def draw(self):
-        pass
+        pygame.draw.rect( self.screen, "#94bdff", pygame.Rect(0, 0, (TILESIZE * 2)*len(self.slots), TILESIZE*2 ) )
+        
+        x_offset = TILESIZE/2
+        y_offset = TILESIZE/2
+        for i in range(len(self.slots)):
+            if i == self.active_slot:
+                pygame.draw.rect(self.screen, "#c8eaff", pygame.Rect( i*(TILESIZE*2), 0, TILESIZE*2, TILESIZE*2 ))
+            pygame.draw.rect(self.screen, "#5779e3", pygame.Rect( i*(TILESIZE*2), 0, TILESIZE*2, TILESIZE*2 ), 2 )
+
+            if self.slots[i].name != 'default':
+                self.screen.blit(self.textures[ self.slots[i].name ], (x_offset + (TILESIZE*2) *i, y_offset) )
+
+                self.quantity_text = self.font.render( str(self.slots[i].quantity), True, 'white' )
+                self.screen.blit(self.quantity_text, ((TILESIZE*2) *i + 5, 5) )
+        pygame.draw.rect( self.screen, "#5779e3", pygame.Rect(0, 0, (TILESIZE * 2)*len(self.slots), TILESIZE*2 ), 4 )

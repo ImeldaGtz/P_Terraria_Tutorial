@@ -23,7 +23,7 @@ class Scene:
         }
         
         # Inventory
-        self.inventory = Inventory(self.app)
+        self.inventory = Inventory(self.app, self.atlas_textures)
 
         # self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
         # Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
