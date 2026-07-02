@@ -17,7 +17,11 @@ class Player(pygame.sprite.Sprite):
         self.group_list = parameters['group_list']
         self.textures = parameters['textures']
         self.block_group = self.group_list['block_group']
+        self.enemy_group = self.group_list['enemy_group']
         self.inventory = parameters['inventory']
+
+            # Health
+        self.health = parameters['health']
 
         # Is grounded
         self.grounded = True
@@ -30,11 +34,21 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             self.velocity.x = 1
         if not keys[pygame.K_a] and not keys[pygame.K_d]:
-            self.velocity.x = 0
-        
+            if self.velocity.x > 0:
+                self.velocity.x -= 0.1
+            elif self.velocity.x < 0:
+                self.velocity.x += 0.1
+
+            if abs(self.velocity.x) < 0.3:
+                self.velocity.x = 0
         # Jumping
         if self.grounded and EventHandler.keydown(pygame.K_SPACE):
             self.velocity.y = -PLAYERJUMPPOWER
+
+        if EventHandler.clicked(1):
+            for enemy in self.enemy_group:
+                if enemy.rect.collidepoint(self.get_adjusted_mouse_position()):
+                    self.inventory.slots[self.inventory.active_slot].attack(self, enemy)
 
     def move(self):
 
@@ -106,3 +120,5 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.move()
         self.block_handling()
+        if self.health <= 0:
+            self.kill()

@@ -9,6 +9,9 @@ class Item:
     def use(self, *args, **kwargs):
         pass
 
+    def attack(self, *args, **kwargs):
+        pass
+
     def __str__(self):
         return f"Name: {self.name}, Quantity: {self.quantity}"
 
@@ -24,6 +27,14 @@ class BlockItem(Item):
         else:
             self.name = 'default'
 
+class ShortswordItem(Item):
+    def __init__(self, name: str = 'default', quantity: int = 0) -> None:
+        super().__init__(name, quantity)
+    def use(self, player, position:tuple):
+        print("using sword")
+    def attack(self, player, target):
+        target.kill()
+
 class ItemData:
     def __init__(self, name: str, quantity: int = 1, groups: list[str] = ['sprites', 'block_group'], use_type: Entity = Entity, item_type: Item = Item):
         self.name = name
@@ -35,5 +46,6 @@ class ItemData:
 items: dict[str, ItemData] = {
     'grass': ItemData('grass', item_type=BlockItem),
     'dirt': ItemData('dirt', item_type=BlockItem),
-    'stone': ItemData('stone', item_type=BlockItem)
+    'stone': ItemData('stone', item_type=BlockItem),
+    'shortsword': ItemData('shortsword', item_type=ShortswordItem)
 }

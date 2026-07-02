@@ -21,6 +21,7 @@ class Mob(Entity):
             self.group_list = parameters['group_list']
             self.block_group = self.group_list['block_group']
             self.player = parameters['player']
+            self.damage = parameters['damage']
 
         self.velocity = pygame.math.Vector2()
         self.mass = 5
@@ -29,7 +30,12 @@ class Mob(Entity):
 
         # States
         self.attacking = True
+        self.attacked = False
         self.grounded = True
+
+        #cooldown
+        self.attack_cooldown = 60
+        self.counter = self.attack_cooldown
 
     def move(self):
 
@@ -83,5 +89,25 @@ class Mob(Entity):
             else:
                 self.grounded = False
 
+    def check_player_collision(self):
+        if self.attacking and not self.attacked:
+            if self.rect.colliderect(self.player.rect):
+                self.player.health -= self.damage
+                self.attacked = True
+                self.counter = self.attack_cooldown
+
+               # knockback player
+                if self.player.rect.centerx > self.rect.centerx:
+                    self.player.velocity.x = 3
+                elif self.player.rect.centerx < self.rect.centerx:
+                   self.player.velocity.x = -3
+
     def update(self):
         self.move() 
+        self.check_player_collision()
+
+        if self.attacked:
+            self.counter -= 1
+        if self.counter < 0:
+            self.counter = self.attack_cooldown
+            self.attacked = False

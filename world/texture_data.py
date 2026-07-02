@@ -29,5 +29,10 @@ solo_texture_data = {
         'type': 'enemy',
         'filepath': 'res/zombie.png', 
         'size': (TILESIZE*4, TILESIZE*4)
+        },
+    'shortsword': {
+        'type': 'weapon',
+        'filepath': 'res/shortsword.png',
+        'size': (TILESIZE, TILESIZE)
         }
 }

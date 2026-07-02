@@ -13,6 +13,7 @@ class Inventory:
         for index in range(5):
             self.slots.append(Item())
 
+        self.slots[0] = ShortswordItem('shortsword', 1)
         self.slots[1] = BlockItem('grass', 5)
         self.slots[2] = BlockItem('dirt', 3)
 

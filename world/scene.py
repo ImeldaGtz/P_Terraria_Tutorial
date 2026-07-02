@@ -12,18 +12,20 @@ class Scene:
     def __init__(self, app) -> None:
         self.app = app
 
-        self.solo_textures = self.gen_solo_textures()
-        self.atlas_textures = self.gen_atlas_textures("res/owatlas.png")
+        self.textures = self.gen_textures()
+        self.textures.update(self.gen_atlas_textures("res/owatlas.png"))
 
         self.sprites = Camera()
         self.blocks = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
         self.group_list: dict[str, pygame.sprite.Group] = {
             'sprites': self.sprites,
-            'block_group': self.blocks
+            'block_group': self.blocks,
+            'enemy_group': self.enemies
         }
         
         # Inventory
-        self.inventory = Inventory(self.app, self.atlas_textures)
+        self.inventory = Inventory(self.app, self.textures)
 
         # self.entity = Entity([self.sprites], image=self.atlas_textures['grass'])
         # Entity([self.sprites], position=(100,100) ,image=self.atlas_textures['dirt'])
@@ -32,15 +34,27 @@ class Scene:
         # # Floor
         # Entity([self.sprites, self.blocks], pygame.Surface((TILESIZE*10, TILESIZE)) , position= (400,550))
 
-        self.player = Player([self.sprites], self.solo_textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//9), parameters={
+        self.player = Player([self.sprites], self.textures['player_static'], (SCREENWIDTH//2, SCREENHEIGHT//9), parameters={
             'group_list': self.group_list, 
-            'textures': self.atlas_textures,
-            'inventory': self.inventory
+            'textures': self.textures,
+            'inventory': self.inventory,
+            'health': 3
             })
 
-        Mob([self.sprites], self.solo_textures['zombie_static'], (800, -500), parameters={
+        Mob([self.sprites, self.enemies], self.textures['zombie_static'], (800, -500), parameters={
             'group_list': self.group_list, 
-            'player': self.player
+            'player': self.player,
+            'damage': 1
+        })
+        Mob([self.sprites, self.enemies], self.textures['zombie_static'], (700, -500), parameters={
+            'group_list': self.group_list, 
+            'player': self.player,
+            'damage': 1
+        })
+        Mob([self.sprites, self.enemies], self.textures['zombie_static'], (900, -500), parameters={
+            'group_list': self.group_list, 
+            'player': self.player,
+            'damage': 1
         })
         self.gen_world()
 
@@ -53,7 +67,7 @@ class Scene:
         self.sprites.draw(self.player, self.app.screen)
         self.inventory.draw()
 
-    def gen_solo_textures(self) -> dict:
+    def gen_textures(self) -> dict:
         textures = {}
 
         for name, data in solo_texture_data.items():
@@ -91,4 +105,4 @@ class Scene:
                 if y < heightmap[x] - 5:
                     block_type = 'stone'
                     
-                Entity( [self.sprites, self.blocks], self.atlas_textures[block_type], (x*TILESIZE, offset*TILESIZE), name= block_type )
+                Entity( [self.sprites, self.blocks], self.textures[block_type], (x*TILESIZE, offset*TILESIZE), name= block_type )
